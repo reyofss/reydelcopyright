@@ -15,9 +15,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y git curl build-essential
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
-          curl -Lo $HOME/theos/sdks/iPhoneOS16.5.sdk.tar.xz https://github.com/theos/sdks/releases/download/v1/iPhoneOS16.5.sdk.tar.xz
-          cd $HOME/theos/sdks
-          tar -xf iPhoneOS16.5.sdk.tar.xz
+          cd $HOME/theos
+          curl -LO https://github.com/theos/sdks/releases/download/v1/iPhoneOS16.5.sdk.tar.xz
+          tar -xf iPhoneOS16.5.sdk.tar.xz -C sdks/
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
           echo "$HOME/theos/bin" >> $GITHUB_PATH
 
