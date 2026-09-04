@@ -5,15 +5,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Theos
         run: |
-          sudo apt-get update
-          sudo apt-get install -y git curl build-essential
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
           curl -Lo $HOME/theos/sdks/iPhoneOS16.5.sdk.tar.xz https://github.com/theos/sdks/releases/download/v1/iPhoneOS16.5.sdk.tar.xz
           cd $HOME/theos/sdks
@@ -28,7 +26,7 @@ jobs:
           make package FINALPACKAGE=1
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: ReyDelCopyright
           path: packages/*.deb
