@@ -1,0 +1,32 @@
+name: Build Tweak
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Theos
+        run: |
+          git clone --recursive https://github.com/theos/theos.git $HOME/theos
+          curl -Lo $HOME/theos/sdks/iPhoneOS16.5.sdk.tar.xz https://github.com/theos/sdks/releases/download/v1/iPhoneOS16.5.sdk.tar.xz
+          cd $HOME/theos/sdks
+          tar -xf iPhoneOS16.5.sdk.tar.xz
+          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
+          echo "$HOME/theos/bin" >> $GITHUB_PATH
+
+      - name: Build Package
+        run: |
+          export THEOS=$HOME/theos
+          make clean
+          make package FINALPACKAGE=1
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ReyDelCopyright
+          path: packages/*.deb
